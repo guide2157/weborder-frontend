@@ -6,19 +6,21 @@ import {ApplicationState, ConnectedReduxProps} from "../../store";
 import {Dispatch} from "redux";
 import {addWishList, removeWishList} from "../../store/menus/actions";
 import {connect} from "react-redux";
-import {Menu} from "../../store/menus/types";
+
 
 type Props = {
-    category_name?: string
-    image: string
-    id: number
-    name: string
-    price: number
-    tags: string[]
+    menu : {
+        category_name?: string
+        image: string
+        id: number
+        name: string
+        price: number
+        tags: string[]
+    }
 }
 
 type PropsFromState = {
-    wishList: Menu[]
+    wishList: number[]
     config: any
 }
 
@@ -41,16 +43,16 @@ class MenuCard extends React.Component<AllProps, State> {
 
     state = {
         wishList: this.props.wishList.find(menu => {
-            return menu.id === this.props.id
+            return menu === this.props.menu.id
         }) !== undefined
     }
 
     toggleWishList = () => {
-        const {id} = this.props
+        const {menu} = this.props
         if (this.state.wishList) {
-            this.props.removeFromWishList(id)
+            this.props.removeFromWishList(menu.id)
         } else {
-            this.props.addToWishList(id)
+            this.props.addToWishList(menu.id)
         }
 
         this.setState( {
@@ -59,7 +61,8 @@ class MenuCard extends React.Component<AllProps, State> {
     }
 
     render() {
-        const {image, id, name, price, tags} = this.props
+        const {menu} = this.props
+        const {image, id, name, price, tags} = menu
         return (
             <Wrapper sm={3} md={3}>
                 <CardLink>

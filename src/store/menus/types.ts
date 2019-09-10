@@ -34,5 +34,5 @@ export interface MenusState {
     readonly loading: boolean
     readonly data: Menu[]
     readonly errors?: string
-    wishList: Menu[]
+    wishList: number[]
 }

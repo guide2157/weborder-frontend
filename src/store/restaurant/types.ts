@@ -1,6 +1,8 @@
 // This file holds our state type, as well as any other types related to this Redux store.
 
 // Response object for GET /Activities
+import {Menu} from "../menus/types";
+
 export interface Restaurant extends ApiResponse {
     about: string
     detail: string
@@ -12,6 +14,7 @@ export interface Restaurant extends ApiResponse {
     name: string
     slug: string
     tags: string[]
+    featured_menus: Menu[]
     updated_at: number
 }
 

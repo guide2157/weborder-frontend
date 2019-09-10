@@ -15,7 +15,8 @@ import MenuButton from "../components/Button";
 type State = {}
 
 type PropsFromState = {
-    wishList : Menu[]
+    wishList : number[]
+    menus: Menu[]
     config: any
 }
 
@@ -30,19 +31,21 @@ type AllProps = PropsFromState &
 class WishList extends React.Component<AllProps, State> {
 
     render() {
-        const {wishList} = this.props
+        const {wishList, menus} = this.props
         return (
             <Fragment>
                 <Navigation />
                 <Container>
                     <Heading text={'Wish List'} underline={true}/>
                     <CardsGrid>
-                        {wishList.map(menu => {
-                            return (
-                                <Col key={2} xs="6" sm="6" >
-                                    <MenuCard image={menu.image} id={menu.id} name={menu.name} price={menu.price} tags={menu.tags}/>
-                                </Col>
-                            )
+                        {menus.map(menu => {
+                            if (wishList.find(id => {return id === menu.id}) !== undefined) {
+                                return (
+                                    <Col key={2} xs="6" sm="6" >
+                                        <MenuCard menu={menu}/>
+                                    </Col>
+                                )
+                            }
                         })}
                     </CardsGrid>
                     <MenuButton onClick={this.props.clearWishList}>
@@ -59,6 +62,7 @@ class WishList extends React.Component<AllProps, State> {
 const mapStateToProps = ({menus, layout}: ApplicationState) => ({
     wishList: menus.wishList,
     config: layout,
+    menus: menus.data
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router'
 import Root from './components/layout/Root'
 import IndexPage from './pages/Index'
 import WishListPage from "./pages/WishList";
+import RestaurantPage from './pages/Restaurant'
 
 class Routes extends React.Component<{}, {}> {
     render() {
@@ -13,16 +14,17 @@ class Routes extends React.Component<{}, {}> {
                 <Switch>
                     <Route
                         exact
-                        path={''}
-                        component={IndexPage}
+                        path={'/'}
+                        render={ () => <IndexPage/>}
                     />
                     <Route
                         path={'/wishlist'}
-                        component={WishListPage}
+                        render={ () => <WishListPage/>}
                     />
-                    {/* //************************ ADD NEW ROUTES HERE ABOVE RELOAD *********************************\\ */}
-                    {/*
-          // @ts-ignore */}
+                    <Route
+                        path={'/restaurant'}
+                        render={() => <RestaurantPage/>}
+                    />
 
                 </Switch>
             </Root>

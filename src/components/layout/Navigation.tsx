@@ -7,13 +7,12 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
-    NavLink,
 } from 'reactstrap'
 import styled from '../../utils/styled'
 import classnames from 'classnames'
-// import LanguagePicker from '../../containers/LanguagePicker'
 import {isMobile} from 'react-device-detect'
 import {Global} from "@emotion/core";
+import {Link} from "react-router-dom";
 
 interface PropsFromState {
     loading?: boolean
@@ -78,21 +77,21 @@ class Navigation extends React.Component<AllProps, State> {
                             <Nav className="ml-auto" navbar>
 
                                 <NavItem className="mobile-nav-item">
-                                    <NavLink className="nav-link" href="">
+                                    <Link className="nav-link" to="">
                                         Orders
-                                    </NavLink>
+                                    </Link>
                                 </NavItem>
 
                                 <NavItem className="mobile-nav-item ">
-                                    <NavLink className="nav-link" href="/wishlist">
+                                    <Link className="nav-link" to="/wishlist">
                                         WishList
-                                    </NavLink>
+                                    </Link>
                                 </NavItem>
 
                                 <NavItem className="mobile-nav-item ">
-                                    <NavLink className="nav-link" href="/about">
+                                    <Link className="nav-link" to="/about">
                                         About
-                                    </NavLink>
+                                    </Link>
                                 </NavItem>
 
                             </Nav>
