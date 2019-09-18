@@ -4,7 +4,6 @@
 import {Menu} from "../menus/types";
 
 export interface Restaurant extends ApiResponse {
-    about: string
     detail: string
     gallery: string[]
     id: number

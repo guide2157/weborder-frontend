@@ -2,13 +2,14 @@ import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {ApplicationState, ConnectedReduxProps} from '../store'
 import {fetchMenusRequest} from "../store/menus/actions";
-import {fetchRequest as fetchRestaurant} from "../store/restaurant/actions";
+// import {fetchRequest as fetchRestaurant} from "../store/restaurant/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
 import MenuCard from "../components/cards/MenuCard";
 import CardsGrid from "../components/layout/CardsGrid";
 import {Col, Container} from "reactstrap";
 import {Menu} from "../store/menus/types";
+import _ from "lodash";
 
 
 type State = {}
@@ -22,8 +23,8 @@ type PropsFromState = {
 }
 
 type PropsFromDispatch = {
-    fetchRequest: typeof fetchMenusRequest
-    fetchRestaurant: typeof fetchRestaurant
+    fetchMenus: typeof fetchMenusRequest
+    // fetchRestaurant: typeof fetchRestaurant
 }
 
 type AllProps = PropsFromState &
@@ -33,35 +34,44 @@ type AllProps = PropsFromState &
 class IndexPage extends React.Component<AllProps, State> {
 
     componentDidMount(): void {
-        // this.props.fetchRequest();
+        this.props.fetchMenus();
         // this.props.fetchRestaurant();
     }
 
     render() {
 
-        const mockMenu = {
-            about: 'delicious',
-            category_name: 'Korean',
-            detail: 'best fried chicken in town',
-            image: '',
-            id: 1,
-            meta_description: '',
-            meta_title: '',
-            name: 'Fried Chicken',
-            price: 15,
-            slug: 'fried_chicken',
-            tags: ['spicy', 'chicken', 'deep fried'],
-            updated_at: 0
-        }
+        // const mockMenu = {
+        //     about: 'delicious',
+        //     category_name: 'Korean',
+        //     detail: 'best fried chicken in town',
+        //     image: '',
+        //     id: 1,
+        //     meta_description: '',
+        //     meta_title: '',
+        //     name: 'Fried Chicken',
+        //     price: 15,
+        //     slug: 'fried_chicken',
+        //     tags: ['spicy', 'chicken', 'deep fried'],
+        //     updated_at: 0
+        // }
+
+        const {menus} = this.props
 
         return (
             <Fragment>
                 <Navigation />
                 <Container>
                 <CardsGrid>
-                    <Col key={2} xs="6" sm="6" >
-                         <MenuCard menu={mockMenu}/>
-                    </Col>
+                    {_.map(menus, (menu) => {
+                        return (
+                            <Col key={2} xs="6" sm="6" >
+                                <MenuCard menu={menu}/>
+                            </Col>
+                        )
+                    })}
+                    {/*<Col key={2} xs="6" sm="6" >*/}
+                    {/*     <MenuCard menu={mockMenu}/>*/}
+                    {/*</Col>*/}
                     {/*<Col key={1} xs="6" sm="6">*/}
                     {/*<MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
                     {/*</Col>*/}
@@ -86,8 +96,8 @@ const mapStateToProps = ({menus, layout, restaurant}: ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    fetchRestaurant: (payload: any) => dispatch(fetchRestaurant(payload)),
-    fetchRequest: (payload: any) => dispatch(fetchMenusRequest(payload))
+    // fetchRestaurant: (payload: any) => dispatch(fetchRestaurant(payload)),
+    fetchMenus: (payload: any) => dispatch(fetchMenusRequest(payload))
 })
 
 export default connect(

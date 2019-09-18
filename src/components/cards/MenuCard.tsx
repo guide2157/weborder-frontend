@@ -47,7 +47,8 @@ class MenuCard extends React.Component<AllProps, State> {
         }) !== undefined
     }
 
-    toggleWishList = () => {
+    toggleWishList = (e : any) => {
+        e.preventDefault()
         const {menu} = this.props
         if (this.state.wishList) {
             this.props.removeFromWishList(menu.id)
@@ -73,7 +74,7 @@ class MenuCard extends React.Component<AllProps, State> {
                                 <h5>
                                     {tags[0]}
                                 </h5>
-                                    <span onClick={this.toggleWishList}>
+                                    <span onClick={e => this.toggleWishList(e)}>
                                         Wishlist
                                     </span>
                                 </CardInfoTop>
@@ -147,6 +148,7 @@ const CardInfoBottom = styled('div')`
     margin-bottom: 0;
     font-size: 1rem;
     display: inline-block;
+    width: 72%;
   }
   
   span {
@@ -163,6 +165,7 @@ const CardInfoTop = styled('div')`
     top: 20px;
     width: 80%;
     h5 {
+        color: ${props => props.theme.colors.white};
         font-size: 1rem;
         display: inline-block;
     }

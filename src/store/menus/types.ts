@@ -2,7 +2,6 @@
 
 // Response object for GET /Activities
 export interface Menu extends ApiResponse {
-    about: string
     category_name: string
     detail: string
     image: string

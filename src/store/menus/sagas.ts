@@ -4,11 +4,11 @@ import { fetchError, fetchSuccess } from './actions'
 import { v1Api } from '../../utils/api'
 
 function* handleFetch(action: any) {
-    const { locale } = action.payload
+    // const { locale } = action.payload
     try {
         const params = {
-            locale,
-            path: 'menus'
+            // locale,
+            path: 'menus/all'
         }
         const res = yield call(v1Api, params)
 
@@ -30,7 +30,7 @@ function* handleFetch(action: any) {
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchFetchRequest() {
     yield all([
-        takeLatest(MenusActionTypes.FETCH_REQUEST, handleFetch),
+        takeLatest(MenusActionTypes.FETCH_REQUEST, handleFetch)
     ])
 }
 
