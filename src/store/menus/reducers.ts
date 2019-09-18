@@ -6,7 +6,8 @@ const initialState: MenusState = {
     data: [],
     errors: undefined,
     loading: false,
-    wishList: []
+    wishList: [],
+    orders: []
 }
 
 const reducer: Reducer<MenusState> = (state = initialState, action) => {
@@ -33,7 +34,7 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             }
         }
         case MenusActionTypes.REMOVE_FROM_WISH_LIST: {
-            const result = state.wishList.filter((activityID: any) => activityID !== action.payload)
+            const result = state.wishList.filter((menuID: any) => menuID !== action.payload)
             return {
                 ...state,
                 wishList: result
@@ -45,6 +46,28 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
                 wishList: []
             }
         }
+        case MenusActionTypes.ADD_TO_ORDERS: {
+            const { orders } = state
+            orders.push(action.payload)
+            return {
+                ...state,
+                orders
+            }
+        }
+        case MenusActionTypes.REMOVE_FROM_ORDERS: {
+            const result = state.orders.filter((menuID: any) => menuID !== action.payload)
+            return {
+                ...state,
+                orders: result
+            }
+        }
+        case MenusActionTypes.CLEAR_ORDERS: {
+            return {
+                ...state,
+                orders: []
+            }
+        }
+
         default: {
             return state
         }

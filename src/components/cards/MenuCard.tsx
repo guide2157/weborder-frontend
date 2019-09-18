@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 
 
 type Props = {
-    menu : {
+    menu: {
         category_name?: string
         image: string
         id: number
@@ -47,7 +47,7 @@ class MenuCard extends React.Component<AllProps, State> {
         }) !== undefined
     }
 
-    toggleWishList = (e : any) => {
+    toggleWishList = (e: any) => {
         e.preventDefault()
         const {menu} = this.props
         if (this.state.wishList) {
@@ -56,8 +56,8 @@ class MenuCard extends React.Component<AllProps, State> {
             this.props.addToWishList(menu.id)
         }
 
-        this.setState( {
-            wishList : !this.state.wishList
+        this.setState({
+            wishList: !this.state.wishList
         })
     }
 
@@ -71,11 +71,11 @@ class MenuCard extends React.Component<AllProps, State> {
                         <DishCard src={image}>
                             {tags.length > 0 && (
                                 <CardInfoTop>
-                                <h5>
-                                    {tags[0]}
-                                </h5>
                                     <span onClick={e => this.toggleWishList(e)}>
                                         Wishlist
+                                    </span>
+                                    <span onClick={e => this.toggleWishList(e)}>
+                                        Order
                                     </span>
                                 </CardInfoTop>
                             )}
@@ -95,7 +95,7 @@ class MenuCard extends React.Component<AllProps, State> {
     }
 }
 
-const mapStateToProps = ({ menus, layout}: ApplicationState) => ({
+const mapStateToProps = ({menus, layout}: ApplicationState) => ({
     wishList: menus.wishList,
     config: layout,
 })

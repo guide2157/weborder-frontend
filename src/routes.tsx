@@ -6,6 +6,7 @@ import Root from './components/layout/Root'
 import IndexPage from './pages/Index'
 import WishListPage from "./pages/WishList";
 import RestaurantPage from './pages/Restaurant'
+import OrderPage from './pages/Orders';
 
 class Routes extends React.Component<{}, {}> {
     render() {
@@ -20,6 +21,10 @@ class Routes extends React.Component<{}, {}> {
                     <Route
                         path={'/wishlist'}
                         render={ () => <WishListPage/>}
+                    />
+                    <Route
+                        path={'/orders'}
+                        render={ () => <OrderPage/>}
                     />
                     <Route
                         path={'/restaurant'}
