@@ -40,20 +40,20 @@ class IndexPage extends React.Component<AllProps, State> {
 
     render() {
 
-        // const mockMenu = {
-        //     about: 'delicious',
-        //     category_name: 'Korean',
-        //     detail: 'best fried chicken in town',
-        //     image: '',
-        //     id: 1,
-        //     meta_description: '',
-        //     meta_title: '',
-        //     name: 'Fried Chicken',
-        //     price: 15,
-        //     slug: 'fried_chicken',
-        //     tags: ['spicy', 'chicken', 'deep fried'],
-        //     updated_at: 0
-        // }
+        const mockMenu = {
+            about: 'delicious',
+            category_name: 'Korean',
+            detail: 'best fried chicken in town',
+            image: '',
+            id: 1,
+            meta_description: '',
+            meta_title: '',
+            name: 'Fried Chicken',
+            price: 15,
+            slug: 'fried_chicken',
+            tags: ['spicy', 'chicken', 'deep fried'],
+            updated_at: 0
+        }
 
         const {menus} = this.props
 
@@ -69,9 +69,9 @@ class IndexPage extends React.Component<AllProps, State> {
                             </Col>
                         )
                     })}
-                    {/*<Col key={2} xs="6" sm="6" >*/}
-                    {/*     <MenuCard menu={mockMenu}/>*/}
-                    {/*</Col>*/}
+                    <Col key={2} xs="6" sm="6" >
+                         <MenuCard menu={mockMenu}/>
+                    </Col>
                     {/*<Col key={1} xs="6" sm="6">*/}
                     {/*<MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
                     {/*</Col>*/}

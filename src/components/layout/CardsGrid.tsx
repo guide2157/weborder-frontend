@@ -19,7 +19,7 @@ export default class CardsGrid extends React.Component<Props> {
                         {heading}
                     </h2>
                 )}
-                <Row>
+                <Row className='row-box'>
                     {children}
                 </Row>
             </Fragment>
@@ -29,4 +29,8 @@ export default class CardsGrid extends React.Component<Props> {
 }
 const Wrapper = styled('div')`
     margin-top: 1rem;
+    
+    .row-box {
+        display: contents;
+    }
 `

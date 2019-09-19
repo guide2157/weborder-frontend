@@ -1,22 +1,15 @@
 import React from 'react'
 import styled from "../../utils/styled";
 import {Link} from "react-router-dom";
-import {Col} from "reactstrap";
 import {ApplicationState, ConnectedReduxProps} from "../../store";
 import {Dispatch} from "redux";
 import {addWishList, removeWishList} from "../../store/menus/actions";
 import {connect} from "react-redux";
+import {Menu} from "../../store/menus/types";
 
 
 type Props = {
-    menu: {
-        category_name?: string
-        image: string
-        id: number
-        name: string
-        price: number
-        tags: string[]
-    }
+    menu: Menu
 }
 
 type PropsFromState = {
@@ -65,16 +58,16 @@ class MenuCard extends React.Component<AllProps, State> {
         const {menu} = this.props
         const {image, id, name, price, tags} = menu
         return (
-            <Wrapper sm={3} md={3}>
+            <Wrapper>
                 <CardLink>
                     <Link to={`/menus/${id}`}>
                         <DishCard src={image}>
                             {tags.length > 0 && (
                                 <CardInfoTop>
-                                    <span onClick={e => this.toggleWishList(e)}>
+                                    <span className='wishlist' onClick={e => this.toggleWishList(e)}>
                                         Wishlist
                                     </span>
-                                    <span onClick={e => this.toggleWishList(e)}>
+                                    <span className='order' onClick={e => this.toggleWishList(e)}>
                                         Order
                                     </span>
                                 </CardInfoTop>
@@ -111,7 +104,7 @@ export default connect(
     mapDispatchToProps
 )(MenuCard)
 
-const Wrapper = styled(Col)`
+const Wrapper = styled('div')`
     padding: 0;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
@@ -151,11 +144,13 @@ const CardInfoBottom = styled('div')`
     width: 72%;
   }
   
-  span {
+   span {
         float: right;
         color: ${props => props.theme.colors.white};
         font-size: 0.9rem;
     }
+    
+    
   
 `
 
@@ -170,9 +165,16 @@ const CardInfoTop = styled('div')`
         display: inline-block;
     }
     span {
-        float: right;
         color: ${props => props.theme.colors.white};
         margin-bottom: 0;
         font-size: 0.8rem;
+    }
+    
+    span.wishlist {
+        float: left;
+    }
+    
+    span.order {
+        float: right;
     }
 `

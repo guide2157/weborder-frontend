@@ -48,14 +48,23 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
         }
         case MenusActionTypes.ADD_TO_ORDERS: {
             const { orders } = state
-            orders.push(action.payload)
+            const result = orders.findIndex(menu => {return menu.id = action.payload})
+            if (result != -1) {
+                orders[result].quantity = orders[result].quantity + 1;
+            } else {
+                const menu = {
+                    id: action.payload,
+                    quantity: 1
+                }
+                orders.push(menu)
+            }
             return {
                 ...state,
                 orders
             }
         }
         case MenusActionTypes.REMOVE_FROM_ORDERS: {
-            const result = state.orders.filter((menuID: any) => menuID !== action.payload)
+            const result = state.orders.filter((menuInfo: any) => menuInfo.id !== action.payload)
             return {
                 ...state,
                 orders: result

@@ -37,5 +37,5 @@ export interface MenusState {
     readonly data: Menu[]
     readonly errors?: string
     wishList: number[]
-    orders: number[]
+    orders: {id: number, quantity: number}[]
 }
