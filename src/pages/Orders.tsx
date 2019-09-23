@@ -35,8 +35,8 @@ type AllProps = PropsFromState &
 
 class Order extends React.Component<AllProps, State> {
     state = {
-        totalPrice: this.props.menus.reduce((rsf: number, {price}) => {
-            return rsf * 1 + price * 1
+        totalPrice: this.props.menus.reduce((rsf: number, {price, quantity}) => {
+            return rsf * 1 + ( price * 1 * quantity)
         }, 0)
     }
 

@@ -6,6 +6,8 @@ import {Dispatch} from "redux";
 import {addOrder, addWishList, removeWishList} from "../../store/menus/actions";
 import {connect} from "react-redux";
 import {Menu} from "../../store/menus/types";
+import {FaPlus, FiHeart} from "../Icons";
+import classnames from 'classnames'
 
 
 type Props = {
@@ -51,9 +53,9 @@ class MenuCard extends React.Component<AllProps, State> {
             this.props.addToWishList(menu.id)
         }
 
-        this.setState({
-            wishList: !this.state.wishList
-        })
+        this.setState(prevState => ({
+            wishList: !prevState.wishList
+        }))
     }
 
     toggleOrder = (e:any) => {
@@ -64,6 +66,7 @@ class MenuCard extends React.Component<AllProps, State> {
     render() {
         const {menu} = this.props
         const {image, id, name, price, tags} = menu
+        const {wishList} = this.state
         return (
             <Wrapper>
                 <CardLink>
@@ -71,12 +74,10 @@ class MenuCard extends React.Component<AllProps, State> {
                         <DishCard src={image}>
                             {tags.length > 0 && (
                                 <CardInfoTop>
-                                    <span className='wishlist' onClick={e => this.toggleWishList(e)}>
-                                        Wishlist
-                                    </span>
-                                    <span className='order' onClick={e => this.toggleOrder(e)}>
-                                        Order
-                                    </span>
+                                    <div onClick={(e: any) => this.toggleWishList(e)}>
+                                    <FiHeart  className={classnames({ 'added-wishlist': wishList }, 'wishlist')} />
+                                    </div>
+                                    <FaPlus className='order' onClick={(e : any) => this.toggleOrder(e)} />
                                 </CardInfoTop>
                             )}
                             <CardInfoBottom>
@@ -145,6 +146,7 @@ const CardInfoBottom = styled('div')`
   bottom: 20px;
   width: 80%;
   h5 {
+    text-align: left !important;
     color: ${props => props.theme.colors.white};
     margin-bottom: 0;
     font-size: 1rem;
@@ -168,6 +170,7 @@ const CardInfoTop = styled('div')`
     top: 20px;
     width: 80%;
     h5 {
+        
         color: ${props => props.theme.colors.white};
         font-size: 1rem;
         display: inline-block;
@@ -178,11 +181,20 @@ const CardInfoTop = styled('div')`
         font-size: 0.8rem;
     }
     
-    span.wishlist {
+    svg.wishlist {
         float: left;
     }
     
-    span.order {
+    svg {
+        color: ${props => props.theme.colors.white};
+        font-size: 1.25rem;
+    }
+    
+    svg.order {
         float: right;
+    }
+    
+    svg.added-wishlist {
+        fill: ${props => props.theme.colors.white};
     }
 `
