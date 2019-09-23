@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {ApplicationState, ConnectedReduxProps} from '../store'
-import {clearOrder} from "../store/menus/actions";
+import {addOrder, clearOrder, removeOrder} from "../store/menus/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
 import CardsGrid from "../components/layout/CardsGrid";
@@ -13,16 +13,20 @@ import styled from "../utils/styled";
 import OrderCard from "../components/cards/OrderCard";
 
 
-type State = {}
+type State = {
+    totalPrice: number
+}
 
 type PropsFromState = {
-    orders : {id: number, quantity: number}[]
+    orders: { id: number, quantity: number }[]
     menus: Menu[]
     config: any
 }
 
 type PropsFromDispatch = {
     clearOrders: typeof clearOrder
+    addToOrder: typeof addOrder
+    removeFromOrder: typeof removeOrder
 }
 
 type AllProps = PropsFromState &
@@ -30,71 +34,103 @@ type AllProps = PropsFromState &
     ConnectedReduxProps
 
 class Order extends React.Component<AllProps, State> {
+    state = {
+        totalPrice: this.props.menus.reduce((rsf: number, {price}) => {
+            return rsf * 1 + price * 1
+        }, 0)
+    }
+
+    manageCart = (id: number, amount: number, add: boolean) => {
+        if (add) {
+            this.props.addToOrder(id)
+        } else {
+            this.props.removeFromOrder(id)
+        }
+        this.setState((prevState) => ({
+            totalPrice: add ? prevState.totalPrice * 1 + amount * 1 : prevState.totalPrice * 1 - amount * 1
+        }))
+    }
+
 
     render() {
         const {orders, menus} = this.props
 
-        const totalPrice = menus.reduce((rsf,menu) => rsf + menu.price, 0)
+        const {totalPrice} = this.state
 
-        const mockMenu = {
-                about: 'delicious',
-                category_name: 'Korean',
-                detail: 'best fried chicken in town',
-                image: '',
-                id: 1,
-                meta_description: '',
-                meta_title: '',
-                name: 'Fried Chicken',
-                price: 15,
-                slug: 'fried_chicken',
-                tags: ['spicy', 'chicken', 'deep fried'],
-                updated_at: 0
-            }
+        // const mockMenu = {
+        //         about: 'delicious',
+        //         category_name: 'Korean',
+        //         detail: 'best fried chicken in town',
+        //         image: '',
+        //         id: 1,
+        //         meta_description: '',
+        //         meta_title: '',
+        //         name: 'Fried Chicken',
+        //         price: 15,
+        //         slug: 'fried_chicken',
+        //         tags: ['spicy', 'chicken', 'deep fried'],
+        //         updated_at: 0
+        //     }
 
 
         return (
             <Wrapper>
-                <Navigation />
+                <Navigation/>
                 <Container>
                     <Heading text={'Order'} underline={true}/>
-                    {/*{orders.length > 0 ? (*/}
+                    {orders.length > 0 ? (
                         <div>
-                        <CardsGrid>
-                            {menus.map(menu => {
-                                if (orders.find(order => {return order.id === menu.id}) !== undefined) {
-                                    return (
-                                            <OrderCard menu={menu}/>
-                                    )
-                                }
-                            })}
+                            <CardsGrid>
+                                {menus.map(menu => {
+                                    let amount = 0
+                                    let found = false
+                                    orders.map(order => {
+                                        if (order.id === menu.id) {
+                                            found = true
+                                            amount = order.quantity
+                                        }
+                                    })
 
+                                    if (found) {
+                                        return (
+                                            <OrderCard key={menu.id} menu={menu} quantity={amount}
+                                                       addOrder={(id: number) => {
+                                                           this.manageCart(id, menu.price, true)
+                                                       }}
+                                                       removeOrder={(id: number) => {
+                                                           this.manageCart(id, menu.price, false)
+                                                       }}
+                                            />
+                                        )
+                                    }
 
+                                })}
 
-                            <OrderCard menu={mockMenu}/>
-                        </CardsGrid>
+                                {/*<OrderCard menu={mockMenu}/>*/}
+                            </CardsGrid>
                             <TotalPrice>
-                                <Col xs={{ size: 3, offset: 7}}>
+                                <Col xs={{size: 3, offset: 6}}>
                                     <span>
                                         Total:
                                     </span>
                                 </Col>
                                 <Col xs="2">
                                     <span>
-                                        {totalPrice}$
+                                        {totalPrice.toFixed(2)}$
                                     </span>
                                 </Col>
 
                             </TotalPrice>
 
-                        <MenuButton onClick={this.props.clearOrders}>
-                        Clear All
-                        </MenuButton>
+                            <MenuButton onClick={this.props.clearOrders}>
+                                Clear All
+                            </MenuButton>
                         </div>
-                    {/*): (*/}
-                    {/*    <h5>*/}
-                    {/*        You currently do not have any menus in your order.*/}
-                    {/*    </h5>*/}
-                    {/*)}*/}
+                    ) : (
+                        <h5>
+                            You currently do not have any menus in your order.
+                        </h5>
+                    )}
 
 
                 </Container>
@@ -112,7 +148,9 @@ const mapStateToProps = ({menus, layout}: ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    clearOrders: () => dispatch(clearOrder())
+    clearOrders: () => dispatch(clearOrder()),
+    removeFromOrder: (payload: any) => dispatch(removeOrder(payload)),
+    addToOrder: (payload: any) => dispatch(addOrder(payload))
 })
 
 export default connect(

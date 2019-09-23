@@ -1,32 +1,38 @@
 import React from 'react';
 import styled from "../../utils/styled";
 import {Menu} from "../../store/menus/types";
-import {removeOrder} from "../../store/menus/actions";
 import {ApplicationState, ConnectedReduxProps} from "../../store";
-import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import {Button, Col, Row} from "reactstrap";
+import { Col, Row} from "reactstrap";
+import {FaMinus, FaPlus} from "../Icons";
 
 type Props = {
     menu: Menu
+    quantity: number
+    addOrder:any
+    removeOrder:any
 }
 
-type PropsFromDispatch = {
-    removeFromOrder: typeof removeOrder
+
+type AllProps = Props& ConnectedReduxProps
+
+type State = {
+    amount: number
 }
-
-type AllProps = Props & PropsFromDispatch & ConnectedReduxProps
-
-type State = {}
 
 class OrderCard extends React.Component<AllProps, State> {
+    state = {
+        amount: this.props.quantity
+    }
+
     render() {
         const {menu} = this.props
         const {name, price} = menu
+        const {amount} = this.state
         return (
             <Wrapper sm={12}>
                 <Row>
-                    <MenuName xs="5" sm="5">
+                    <MenuName xs="5" sm="6">
                         <span>
                             {name}
                         </span>
@@ -36,16 +42,20 @@ class OrderCard extends React.Component<AllProps, State> {
                         {price}$
                         </span>
                     </MenuPrice>
-                    <MenuButton xs="5" sm="5">
-                        <Button>
-                            Add
-                        </Button>
+                    <MenuButton xs="4" sm="3">
+                        <div>
+                        <FaPlus onClick={() => {
+                            this.setState(prevState => ({amount: prevState.amount + 1}))
+                            this.props.addOrder(menu.id)
+                        }}/>
                         <span>
-
+                            {amount}
                         </span>
-                        <Button>
-                            Remove
-                        </Button>
+                        <FaMinus onClick={() => {
+                            this.setState(prevState => ({amount: prevState.amount - 1}))
+                            this.props.removeOrder(menu.id)
+                        }}/>
+                        </div>
                     </MenuButton>
                 </Row>
 
@@ -58,13 +68,10 @@ const mapStateToProps = ({layout}: ApplicationState) => ({
     config: layout,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    removeFromOrder: (payload: any) => dispatch(removeOrder(payload))
-})
+
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(OrderCard)
 
 
@@ -98,16 +105,13 @@ const MenuPrice = styled(Col)`
 `
 
 const MenuButton = styled(Col)`
-    font-size: 0.5rem;
-    .btn {
-        margin: 0 10px;
+    font-size: 1rem;
+    div {
+        margin: 10% auto;
+        width: fit-content;
     }
-
-    .btn: first-of-type {
-        margin-left: 0;
-    }
-    
-    .byn: last-of-type {
-        margin-right: 0;
+    span {
+        display: inline-block;
+        margin: 0 15px;
     }
 `

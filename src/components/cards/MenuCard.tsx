@@ -3,7 +3,7 @@ import styled from "../../utils/styled";
 import {Link} from "react-router-dom";
 import {ApplicationState, ConnectedReduxProps} from "../../store";
 import {Dispatch} from "redux";
-import {addWishList, removeWishList} from "../../store/menus/actions";
+import {addOrder, addWishList, removeWishList} from "../../store/menus/actions";
 import {connect} from "react-redux";
 import {Menu} from "../../store/menus/types";
 
@@ -20,6 +20,8 @@ type PropsFromState = {
 type PropsFromDispatch = {
     addToWishList: typeof addWishList
     removeFromWishList: typeof removeWishList
+    addToOrder: typeof addOrder
+
 }
 
 type SrcProp = {
@@ -54,6 +56,11 @@ class MenuCard extends React.Component<AllProps, State> {
         })
     }
 
+    toggleOrder = (e:any) => {
+        e.preventDefault()
+        this.props.addToOrder(this.props.menu.id)
+    }
+
     render() {
         const {menu} = this.props
         const {image, id, name, price, tags} = menu
@@ -67,7 +74,7 @@ class MenuCard extends React.Component<AllProps, State> {
                                     <span className='wishlist' onClick={e => this.toggleWishList(e)}>
                                         Wishlist
                                     </span>
-                                    <span className='order' onClick={e => this.toggleWishList(e)}>
+                                    <span className='order' onClick={e => this.toggleOrder(e)}>
                                         Order
                                     </span>
                                 </CardInfoTop>
@@ -95,7 +102,8 @@ const mapStateToProps = ({menus, layout}: ApplicationState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     addToWishList: (payload: any) => dispatch(addWishList(payload)),
-    removeFromWishList: (payload: any) => dispatch(removeWishList(payload))
+    removeFromWishList: (payload: any) => dispatch(removeWishList(payload)),
+    addToOrder:(payload:any)=>dispatch(addOrder(payload))
 })
 
 
@@ -141,7 +149,7 @@ const CardInfoBottom = styled('div')`
     margin-bottom: 0;
     font-size: 1rem;
     display: inline-block;
-    width: 72%;
+    width: 70%;
   }
   
    span {

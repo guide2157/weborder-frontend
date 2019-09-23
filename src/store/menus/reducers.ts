@@ -64,10 +64,18 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             }
         }
         case MenusActionTypes.REMOVE_FROM_ORDERS: {
-            const result = state.orders.filter((menuInfo: any) => menuInfo.id !== action.payload)
+            const { orders } = state
+            const result = orders.findIndex(menu => {return menu.id = action.payload})
+            if (result != -1) {
+                if (orders[result].quantity == 1) {
+                    orders.splice(result, 1)
+                } else {
+                    orders[result].quantity = orders[result].quantity - 1;
+                }
+            }
             return {
                 ...state,
-                orders: result
+                orders
             }
         }
         case MenusActionTypes.CLEAR_ORDERS: {
