@@ -47,30 +47,43 @@ class Navigation extends React.Component<AllProps, State> {
         })
     }
 
+    updateDimensions = () => {
+        this.setState({
+            heightSet: window.scrollY
+        })
+    }
+
+    componentDidMount() {
+        this.updateDimensions()
+        window.addEventListener('scroll', this.updateDimensions)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.updateDimensions)
+    }
+
     render() {
         const {heightSet, isOpen} = this.state
         const override = this.props.override || 60
 
 
         return (
-            <div>
+            <div style={{position: 'sticky'}}>
                 <Wrapper>
                     <Navbar
                         fixed="top"
                         dark
                         expand="md"
                         className={classnames(
-                            { active: heightSet > override },
-                            { mobilenav: isOpen },
-                            { 'is-mobile': isMobile }
+                            {active: heightSet > override},
+                            {'mobilenav': isOpen},
+                            {'is-mobile': isMobile}
                         )}
                     >
                         <PlaceHolder>
-                        <NavbarToggler onClick={this.toggle}>
-
-                            {!isOpen ? <span>Open</span>: <span>Close</span>}
-
-                        </NavbarToggler>
+                            <NavbarToggler className={isOpen ? 'expanded' : ''} onClick={this.toggle}>
+                                {!isOpen ? <span>Open</span> : <span>Close</span>}
+                            </NavbarToggler>
                         </PlaceHolder>
                         {isOpen &&
                         <Collapse isOpen={isOpen} navbar>
@@ -125,21 +138,14 @@ class Navigation extends React.Component<AllProps, State> {
 export default Navigation
 
 const Wrapper = styled('header')`
+  
   nav {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    position: relative;
     height: 4rem;
     z-index: 1000;
   }
-  background-color: ${props=> props.theme.colors.paleGray};
-  font-family: ${props => props.theme.fonts.headings};
-  
-  
-  .fixed-top {
-    // background-color: ${(props: NavigationProps) => props.bg};
-    // color: ${(props: NavigationProps) => props.fg};
-  }
+
 
   .active.navbar {
     box-shadow: 0px 1px 10px 6px rgba(0, 0, 0, 0.15);
@@ -150,9 +156,13 @@ const Wrapper = styled('header')`
     float:right;
   }
   
+  .navbar-toggler.expanded {
+    color: ${props => props.theme.colors.paleGray} !important;
+  }
+  
   .navbar-collapse {
     position: absolute;
-    background-color: ${props=> props.theme.colors.white};
+    background-color: ${props => props.theme.colors.white};
     top: 4rem;
     left: 0;
     height: 100vh;
@@ -166,10 +176,21 @@ const Wrapper = styled('header')`
     border-bottom: 1px solid ${props => props.theme.colors.darkGray};
   }
   
+  
   .mobile-nav-item a {
     text-decoration: none;
     color: ${props => props.theme.colors.paleGray} !important;
     cursor: pointer;
+  }
+  
+  .mobilenav {
+    background-color: ${props => props.theme.colors.white} !important;
+    border-bottom: 1px solid ${props => props.theme.colors.darkGray};
+  }
+  
+  .active {
+    box-shadow: 0px 1px 10px 6px rgba(0, 0, 0, 0.15);
+    background-color: ${props => props.theme.colors.white} !important;
   }
   
 `

@@ -10,6 +10,7 @@ import CardsGrid from "../components/layout/CardsGrid";
 import {Col, Container} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import _ from "lodash";
+import Banner from "../components/layout/Banner";
 
 
 type State = {}
@@ -60,6 +61,7 @@ class IndexPage extends React.Component<AllProps, State> {
         return (
             <Fragment>
                 <Navigation />
+                <Banner text={'Menu'} image={'https://media.istockphoto.com/photos/blurred-background-of-restaurant-interior-picture-id624546890?k=6&m=624546890&s=612x612&w=0&h=8N4_vwGoS0hzlw2A_SaaJlyMEVmi-H8k1jPF2ZG38H0='}/>
                 <Container>
                 <CardsGrid>
                     {_.map(menus, (menu) => {
