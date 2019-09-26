@@ -77,7 +77,9 @@ class MenuCard extends React.Component<AllProps, State> {
                                     <div onClick={(e: any) => this.toggleWishList(e)}>
                                     <FiHeart  className={classnames({ 'added-wishlist': wishList }, 'wishlist')} />
                                     </div>
-                                    <FaPlus className='order' onClick={(e : any) => this.toggleOrder(e)} />
+                                    <div onClick={(e : any) => this.toggleOrder(e)}>
+                                    <FaPlus className='order' />
+                                    </div>
                                 </CardInfoTop>
                             )}
                             <CardInfoBottom>
@@ -155,7 +157,6 @@ const CardInfoBottom = styled('div')`
   }
   
    span {
-        float: right;
         color: ${props => props.theme.colors.white};
         font-size: 0.9rem;
     }

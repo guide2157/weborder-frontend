@@ -8,7 +8,7 @@ import {Container} from "reactstrap";
 const About = () => {
     return (
         <Wrapper>
-            <Navigation/>
+            <Navigation override={-1}/>
             <Container>
                 <Heading text={'About us'} underline={true}/>
                 <p>

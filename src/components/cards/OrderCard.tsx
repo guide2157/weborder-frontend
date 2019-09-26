@@ -46,14 +46,14 @@ class OrderCard extends React.Component<AllProps, State> {
                         <div>
                         <FaPlus onClick={() => {
                             this.setState(prevState => ({amount: prevState.amount + 1}))
-                            this.props.addOrder(menu.id)
+                            this.props.addOrder()
                         }}/>
                         <span>
                             {amount}
                         </span>
                         <FaMinus onClick={() => {
                             this.setState(prevState => ({amount: prevState.amount - 1}))
-                            this.props.removeOrder(menu.id)
+                            this.props.removeOrder()
                         }}/>
                         </div>
                     </MenuButton>
@@ -80,7 +80,7 @@ const Wrapper = styled(Col)`
     border-radius: 10px;
     height: 3rem;
     color: ${props => props.theme.colors.primaryColor};
-    
+    margin-bottom: 1rem;
     span {
         display: table-cell;
         vertical-align: middle;

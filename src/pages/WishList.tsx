@@ -36,7 +36,7 @@ class WishList extends React.Component<AllProps, State> {
 
         return (
             <Wrapper>
-                <Navigation />
+                <Navigation override={-1}/>
                 <Container>
                     <Heading text={'Wish List'} underline={true}/>
                     {wishList.length > 0 ? (

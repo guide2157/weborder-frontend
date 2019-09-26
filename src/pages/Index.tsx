@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import {ApplicationState, ConnectedReduxProps} from '../store'
 import {fetchMenusRequest} from "../store/menus/actions";
@@ -11,6 +11,7 @@ import {Col, Container} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import _ from "lodash";
 import Banner from "../components/layout/Banner";
+import styled from "../utils/styled";
 
 
 type State = {}
@@ -59,31 +60,29 @@ class IndexPage extends React.Component<AllProps, State> {
         const {menus} = this.props
 
         return (
-            <Fragment>
-                <Navigation />
-                <Banner text={'Menu'} image={'https://media.istockphoto.com/photos/blurred-background-of-restaurant-interior-picture-id624546890?k=6&m=624546890&s=612x612&w=0&h=8N4_vwGoS0hzlw2A_SaaJlyMEVmi-H8k1jPF2ZG38H0='}/>
+            <Wrapper>
+                <Navigation/>
+                <Banner text={'Menu'}
+                        image={'https://media.istockphoto.com/photos/blurred-background-of-restaurant-interior-picture-id624546890?k=6&m=624546890&s=612x612&w=0&h=8N4_vwGoS0hzlw2A_SaaJlyMEVmi-H8k1jPF2ZG38H0='}/>
                 <Container>
-                <CardsGrid>
-                    {_.map(menus, (menu) => {
-                        return (
-                            <Col key={2} xs="6" sm="6" >
-                                <MenuCard menu={menu}/>
-                            </Col>
-                        )
-                    })}
-                    {/*<Col key={2} xs="6" sm="6" >*/}
-                    {/*     <MenuCard menu={mockMenu}/>*/}
-                    {/*</Col>*/}
-                    {/*<Col key={1} xs="6" sm="6">*/}
-                    {/*<MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
-                    {/*</Col>*/}
-                    {/*<Col key={3} xs="6" sm="6">*/}
-                    {/*    <MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
-                    {/*</Col>*/}
-                </CardsGrid>
+                    <CardsGrid>
+                        {_.map(menus, (menu) => {
+                            return (
+                                <Col key={menu.id} xs="6" sm="6">
+                                    <MenuCard menu={menu}/>
+                                </Col>
+                            )
+                        })}
+                        {/*<Col key={1} xs="6" sm="6">*/}
+                        {/*<MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
+                        {/*</Col>*/}
+                        {/*<Col key={3} xs="6" sm="6">*/}
+                        {/*    <MenuCard image={''} id={2} name={'soup'} price={50} tags={['carrot']}/>*/}
+                        {/*</Col>*/}
+                    </CardsGrid>
                 </Container>
 
-            </Fragment>
+            </Wrapper>
         )
     }
 
@@ -106,3 +105,8 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(IndexPage)
+
+const Wrapper = styled('div')`
+
+
+`

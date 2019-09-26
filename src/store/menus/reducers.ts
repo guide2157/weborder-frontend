@@ -7,7 +7,7 @@ const initialState: MenusState = {
     errors: undefined,
     loading: false,
     wishList: [],
-    orders: []
+    orders: {}
 }
 
 const reducer: Reducer<MenusState> = (state = initialState, action) => {
@@ -48,16 +48,15 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
         }
         case MenusActionTypes.ADD_TO_ORDERS: {
             const { orders } = state
-            const result = orders.findIndex(menu => {return menu.id = action.payload})
-            if (result != -1) {
-                orders[result].quantity = orders[result].quantity + 1;
+
+            const result = orders[action.payload]
+            if (result === undefined) {
+
+                orders[action.payload] = 1
             } else {
-                const menu = {
-                    id: action.payload,
-                    quantity: 1
-                }
-                orders.push(menu)
+               orders[action.payload] = orders[action.payload] + 1
             }
+
             return {
                 ...state,
                 orders
@@ -65,12 +64,13 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
         }
         case MenusActionTypes.REMOVE_FROM_ORDERS: {
             const { orders } = state
-            const result = orders.findIndex(menu => {return menu.id = action.payload})
-            if (result != -1) {
-                if (orders[result].quantity == 1) {
-                    orders.splice(result, 1)
+            const result = orders[action.payload]
+
+            if (result !== undefined) {
+                if (orders[action.payload] == 1) {
+                    delete orders[action.payload]
                 } else {
-                    orders[result].quantity = orders[result].quantity - 1;
+                    orders[action.payload] = orders[action.payload] - 1;
                 }
             }
             return {

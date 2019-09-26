@@ -13,6 +13,7 @@ import classnames from 'classnames'
 import {isMobile} from 'react-device-detect'
 import {Global} from "@emotion/core";
 import {Link} from "react-router-dom";
+import {FiMenu, IoIosCloseCircleOutline} from "../Icons";
 
 interface PropsFromState {
     loading?: boolean
@@ -68,8 +69,8 @@ class Navigation extends React.Component<AllProps, State> {
 
 
         return (
-            <div style={{position: 'sticky'}}>
-                <Wrapper>
+            <div>
+                <Wrapper className={classnames({'sticky': heightSet > override})}>
                     <Navbar
                         fixed="top"
                         dark
@@ -82,7 +83,7 @@ class Navigation extends React.Component<AllProps, State> {
                     >
                         <PlaceHolder>
                             <NavbarToggler className={isOpen ? 'expanded' : ''} onClick={this.toggle}>
-                                {!isOpen ? <span>Open</span> : <span>Close</span>}
+                                {!isOpen ? <FiMenu/> : <IoIosCloseCircleOutline/>}
                             </NavbarToggler>
                         </PlaceHolder>
                         {isOpen &&
@@ -138,6 +139,10 @@ class Navigation extends React.Component<AllProps, State> {
 export default Navigation
 
 const Wrapper = styled('header')`
+
+   &.sticky {
+      height: 64px;
+   }
   
   nav {
     -webkit-backface-visibility: hidden;
@@ -156,7 +161,7 @@ const Wrapper = styled('header')`
     float:right;
   }
   
-  .navbar-toggler.expanded {
+  .navbar-toggler.expanded svg{
     color: ${props => props.theme.colors.paleGray} !important;
   }
   
@@ -167,6 +172,7 @@ const Wrapper = styled('header')`
     left: 0;
     height: 100vh;
     width: 100vw;
+    z-index: 100;
   }
 
   
@@ -188,9 +194,17 @@ const Wrapper = styled('header')`
     border-bottom: 1px solid ${props => props.theme.colors.darkGray};
   }
   
+  .navbar-toggler svg {
+    color: ${props => props.theme.colors.white};
+  }
+  
   .active {
     box-shadow: 0px 1px 10px 6px rgba(0, 0, 0, 0.15);
     background-color: ${props => props.theme.colors.white} !important;
+  }
+  
+  .active svg {
+    color: ${props => props.theme.colors.paleGray} !important;
   }
   
 `

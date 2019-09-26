@@ -4,7 +4,6 @@ import {ApplicationState, ConnectedReduxProps} from '../store'
 import {addOrder, clearOrder, removeOrder} from "../store/menus/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
-import CardsGrid from "../components/layout/CardsGrid";
 import {Col, Container, Row} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import Heading from "../components/Heading";
@@ -18,7 +17,7 @@ type State = {
 }
 
 type PropsFromState = {
-    orders: { id: number, quantity: number }[]
+    orders: {[key: number]: number}
     menus: Menu[]
     config: any
 }
@@ -35,9 +34,7 @@ type AllProps = PropsFromState &
 
 class Order extends React.Component<AllProps, State> {
     state = {
-        totalPrice: this.props.menus.reduce((rsf: number, {price, quantity}) => {
-            return rsf * 1 + ( price * 1 * quantity)
-        }, 0)
+        totalPrice: 0
     }
 
     manageCart = (id: number, amount: number, add: boolean) => {
@@ -51,12 +48,23 @@ class Order extends React.Component<AllProps, State> {
         }))
     }
 
+    componentDidMount(): void {
+        let totalAmount = 0
+        this.props.menus.map(menu => {
+            const current = this.props.orders[menu.id]
+            if (current !== undefined) totalAmount += current * menu.price
+        })
+        this.setState({
+            totalPrice: totalAmount
+        })
+
+    }
+
 
     render() {
         const {orders, menus} = this.props
 
         const {totalPrice} = this.state
-
         // const mockMenu = {
         //         about: 'delicious',
         //         category_name: 'Korean',
@@ -75,30 +83,22 @@ class Order extends React.Component<AllProps, State> {
 
         return (
             <Wrapper>
-                <Navigation/>
+                <Navigation override={-1}/>
                 <Container>
                     <Heading text={'Order'} underline={true}/>
-                    {orders.length > 0 ? (
+                    {Object.keys(orders).length > 0 ? (
                         <div>
-                            <CardsGrid>
+                            <Row className='row-box'>
                                 {menus.map(menu => {
-                                    let amount = 0
-                                    let found = false
-                                    orders.map(order => {
-                                        if (order.id === menu.id) {
-                                            found = true
-                                            amount = order.quantity
-                                        }
-                                    })
 
-                                    if (found) {
+                                    if (orders[menu.id]) {
                                         return (
-                                            <OrderCard key={menu.id} menu={menu} quantity={amount}
-                                                       addOrder={(id: number) => {
-                                                           this.manageCart(id, menu.price, true)
+                                            <OrderCard key={menu.id} menu={menu} quantity={orders[menu.id]}
+                                                       addOrder={() => {
+                                                           this.manageCart(menu.id, menu.price, true)
                                                        }}
-                                                       removeOrder={(id: number) => {
-                                                           this.manageCart(id, menu.price, false)
+                                                       removeOrder={() => {
+                                                           this.manageCart(menu.id, menu.price, false)
                                                        }}
                                             />
                                         )
@@ -107,7 +107,7 @@ class Order extends React.Component<AllProps, State> {
                                 })}
 
                                 {/*<OrderCard menu={mockMenu}/>*/}
-                            </CardsGrid>
+                            </Row>
                             <TotalPrice>
                                 <Col xs={{size: 3, offset: 6}}>
                                     <span>
@@ -161,6 +161,10 @@ export default connect(
 const Wrapper = styled('div')`
     h5 {
         text-align: center;
+    }
+     
+    .row-box {
+        display: contents;
     }
 `
 
