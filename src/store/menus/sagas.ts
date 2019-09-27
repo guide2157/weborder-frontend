@@ -3,11 +3,10 @@ import { MenusActionTypes } from './types'
 import { fetchError, fetchSuccess } from './actions'
 import { v1Api } from '../../utils/api'
 
-function* handleFetch(action: any) {
-    // const { locale } = action.payload
+function* handleFetch() {
+    console.log('in')
     try {
         const params = {
-            // locale,
             path: 'menus/all'
         }
         const res = yield call(v1Api, params)

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import styled from "../utils/styled";
 import {fetchRequest as fetchRestaurant} from "../store/restaurant/actions";
 import {ApplicationState, ConnectedReduxProps} from "../store";
@@ -12,6 +12,8 @@ import Heading from "../components/Heading";
 // @ts-ignore
 import Helmet from 'react-helmet'
 import MenuCard from "../components/cards/MenuCard";
+import Banner from "../components/layout/Banner";
+import Navigation from "../components/layout/Navigation";
 
 
 type PropsFromState = {
@@ -30,6 +32,12 @@ type AllProps = PropsFromState &
 
 class RestaurantPage extends React.Component<AllProps, {}> {
 
+    componentDidMount(): void {
+        if (!this.props.restaurant) {
+            this.props.fetchRestaurant()
+        }
+    }
+
     render() {
 
         const {restaurant} = this.props
@@ -45,33 +53,25 @@ class RestaurantPage extends React.Component<AllProps, {}> {
                 </Helmet>
 
                 {restaurant && (
-                    <Fragment>
-                        {restaurant.gallery.length > 0 && (
-                            <CardsCarousel>
-                                {map(restaurant.gallery, (url: any) => {
-                                    return (
-                                        <Col>
-                                            <img ref={url}/>
-                                        </Col>
-                                    )
-                                })}
-                            </CardsCarousel>
-                        )}
+                    <div>
+                        <Navigation />
+                        <Banner text={restaurant.name} image={restaurant.gallery}/>
                         <Container>
                             <Heading text={restaurant.name} underline={true}/>
-                            <p>{restaurant.about}</p>
-                            <Heading text={'featured menus'}/>
-                        </Container>
+                            <p>{restaurant.detail}</p>
+                            <h5>Featured menus</h5>
+
                         <CardsCarousel>
                             {map(restaurant.featured_menus, (menu: any) => {
                                 return (
-                                    <Col>
-                                        <MenuCard menu={menu} />
+                                    <Col key={menu.id}>
+                                        <MenuCard key={menu.id} menu={menu} />
                                     </Col>
                                 )
                             })}
                         </CardsCarousel>
-                    </Fragment>
+                        </Container>
+                    </div>
                 )}
 
 
@@ -97,5 +97,7 @@ export default connect(
 
 
 const Wrapper = styled('div')`
-
+    h5 {
+        margin-bottom: 1rem;
+    }
 `

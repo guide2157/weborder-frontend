@@ -4,11 +4,11 @@ import { fetchError, fetchSuccess } from './actions'
 import { v1Api } from '../../utils/api'
 
 function* handleFetch(action: any) {
-    const { locale } = action.payload
+
     try {
         const params = {
-            locale,
-            path: 'restaurant'
+
+            path: 'restaurant/info'
         }
         const res = yield call(v1Api, params)
 

@@ -5,7 +5,7 @@ import {Menu} from "../menus/types";
 
 export interface Restaurant extends ApiResponse {
     detail: string
-    gallery: string[]
+    gallery: string
     id: number
     image_thumbnail: string
     meta_description: string

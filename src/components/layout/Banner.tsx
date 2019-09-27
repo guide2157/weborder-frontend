@@ -22,7 +22,7 @@ export default class Banner extends React.Component<Props> {
 }
 
 const Wrapper = styled('div')  `
-    height: 400px;
+    height: 300px;
     width: 100wh;
     background-image: linear-gradient(rgb(0,0,0,0.7), rgb(0,0,0,0.7)), url(${(props : bgprops) => props.src});
     background-size: cover;
