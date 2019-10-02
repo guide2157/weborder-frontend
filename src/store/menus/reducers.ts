@@ -1,5 +1,6 @@
 import { Reducer } from 'redux'
 import { MenusState, MenusActionTypes } from './types'
+import moment from "moment";
 
 // Type-safe initialState!
 const initialState: MenusState = {
@@ -7,7 +8,8 @@ const initialState: MenusState = {
     errors: undefined,
     loading: false,
     wishList: [],
-    orders: {}
+    orders: {},
+    history: {}
 }
 
 const reducer: Reducer<MenusState> = (state = initialState, action) => {
@@ -67,7 +69,7 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             const result = orders[action.payload]
 
             if (result !== undefined) {
-                if (orders[action.payload] == 1) {
+                if (orders[action.payload] === 1) {
                     delete orders[action.payload]
                 } else {
                     orders[action.payload] = orders[action.payload] - 1;
@@ -82,6 +84,17 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             return {
                 ...state,
                 orders: []
+            }
+        }
+
+        case MenusActionTypes.PLACE_ORDERS: {
+            const {history, orders} = state
+            const currentTime = moment().unix()
+            history[currentTime] = orders
+            return {
+                ...state,
+                history,
+                orders: {}
             }
         }
 

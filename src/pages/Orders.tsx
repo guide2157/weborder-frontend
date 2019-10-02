@@ -1,10 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {ApplicationState, ConnectedReduxProps} from '../store'
-import {addOrder, clearOrder, removeOrder} from "../store/menus/actions";
+import {addOrder, clearOrder, placeOrder, removeOrder} from "../store/menus/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
-import {Col, Container, Row} from "reactstrap";
+import { Col, Container, Modal, ModalBody, Row} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import Heading from "../components/Heading";
 import MenuButton from "../components/Button";
@@ -14,6 +14,7 @@ import OrderCard from "../components/cards/OrderCard";
 
 type State = {
     totalPrice: number
+    confirmModal: boolean
 }
 
 type PropsFromState = {
@@ -26,6 +27,7 @@ type PropsFromDispatch = {
     clearOrders: typeof clearOrder
     addToOrder: typeof addOrder
     removeFromOrder: typeof removeOrder
+    placeOrders: typeof placeOrder
 }
 
 type AllProps = PropsFromState &
@@ -34,7 +36,8 @@ type AllProps = PropsFromState &
 
 class Order extends React.Component<AllProps, State> {
     state = {
-        totalPrice: 0
+        totalPrice: 0,
+        confirmModal: false
     }
 
     manageCart = (id: number, amount: number, add: boolean) => {
@@ -46,6 +49,28 @@ class Order extends React.Component<AllProps, State> {
         this.setState((prevState) => ({
             totalPrice: add ? prevState.totalPrice * 1 + amount * 1 : prevState.totalPrice * 1 - amount * 1
         }))
+    }
+
+    placeOrder = () => {
+        this.props.placeOrders()
+        this.toggleModal()
+
+    }
+
+    toggleModal = () => {
+        this.setState(prevState => ({
+            confirmModal: !prevState.confirmModal
+        }))
+    }
+
+    renderConfirmModal = () => {
+        return (
+            <Modal isOpen={this.state.confirmModal} toggle={this.toggleModal}>
+                <ModalBody>
+                    <h5 style={{textAlign: "center"}}>The order was sent!</h5>
+                </ModalBody>
+            </Modal>
+        )
     }
 
     componentDidMount(): void {
@@ -121,16 +146,22 @@ class Order extends React.Component<AllProps, State> {
                                 </Col>
 
                             </TotalPrice>
-
+                            <Buttons>
+                            <MenuButton onClick={this.placeOrder}>
+                                Place Order
+                            </MenuButton>
                             <MenuButton onClick={this.props.clearOrders}>
                                 Clear All
                             </MenuButton>
+                            </Buttons>
+
                         </div>
                     ) : (
                         <h5>
                             You currently do not have any menus in your order.
                         </h5>
                     )}
+                    {this.renderConfirmModal()}
 
 
                 </Container>
@@ -150,7 +181,8 @@ const mapStateToProps = ({menus, layout}: ApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     clearOrders: () => dispatch(clearOrder()),
     removeFromOrder: (payload: any) => dispatch(removeOrder(payload)),
-    addToOrder: (payload: any) => dispatch(addOrder(payload))
+    addToOrder: (payload: any) => dispatch(addOrder(payload)),
+    placeOrders: () => dispatch(placeOrder())
 })
 
 export default connect(
@@ -166,8 +198,23 @@ const Wrapper = styled('div')`
     .row-box {
         display: contents;
     }
+    
+  
 `
 
 const TotalPrice = styled(Row)`
     margin-top: 1rem;
+`
+
+const Buttons = styled('div')`
+
+    width: fit-content;
+    margin: 1rem auto;
+
+    button {
+        display: inline-block;
+        width: 160px;
+        margin: 0 10px;
+    }
+
 `

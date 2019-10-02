@@ -27,7 +27,8 @@ export enum MenusActionTypes {
     CLEAR_WISH_LIST = '@@menus/CLEAR_WISH_LIST',
     ADD_TO_ORDERS = '@@menus/ADD_TO_ORDERS',
     REMOVE_FROM_ORDERS = '@@menus/REMOVE_FROM_ORDERS',
-    CLEAR_ORDERS = '@@menus/CLEAR_ORDERS'
+    CLEAR_ORDERS = '@@menus/CLEAR_ORDERS',
+    PLACE_ORDERS = '@@menus/PLACE_ORDERS'
 }
 
 // Declare state types with `readonly` modifier to get compile time immutability.
@@ -38,4 +39,5 @@ export interface MenusState {
     readonly errors?: string
     wishList: number[]
     orders: {[key: number]: number}
+    history: {[key: number]: {[key: number]: number}}
 }

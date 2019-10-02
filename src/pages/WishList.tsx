@@ -45,7 +45,7 @@ class WishList extends React.Component<AllProps, State> {
                             {menus.map(menu => {
                                 if (wishList.find(id => {return id === menu.id}) !== undefined) {
                                     return (
-                                        <Col key={2} xs="6" sm="6" >
+                                        <Col key={menu.id} xs="6" sm="6" >
                                             <MenuCard menu={menu}/>
                                         </Col>
                                     )
