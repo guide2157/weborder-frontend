@@ -4,7 +4,6 @@ import { fetchError, fetchSuccess } from './actions'
 import { v1Api } from '../../utils/api'
 
 function* handleFetch() {
-    console.log('in')
     try {
         const params = {
             path: 'menus/all'

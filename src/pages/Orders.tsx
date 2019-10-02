@@ -78,6 +78,7 @@ class Order extends React.Component<AllProps, State> {
         this.props.menus.map(menu => {
             const current = this.props.orders[menu.id]
             if (current !== undefined) totalAmount += current * menu.price
+            return
         })
         this.setState({
             totalPrice: totalAmount

@@ -8,6 +8,7 @@ import WishListPage from "./pages/WishList";
 import RestaurantPage from './pages/Restaurant'
 import OrderPage from './pages/Orders';
 import AboutPage from './pages/About';
+import MenuPage from './pages/Menu';
 
 class Routes extends React.Component<{}, {}> {
     render() {
@@ -18,6 +19,11 @@ class Routes extends React.Component<{}, {}> {
                         exact
                         path={'/'}
                         render={() => <IndexPage/>}
+                    />
+                    <Route
+                        exact
+                        path={'/menus/:id'}
+                        component={MenuPage}
                     />
                     <Route
                         path={'/wishlist'}
@@ -33,7 +39,7 @@ class Routes extends React.Component<{}, {}> {
                     />
                     <Route
                         path={'/about'}
-                        render={() => <AboutPage/>}
+                        component={AboutPage}
                     />
                 </Switch>
             </Root>
