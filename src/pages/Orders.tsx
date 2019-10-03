@@ -4,12 +4,13 @@ import {ApplicationState, ConnectedReduxProps} from '../store'
 import {addOrder, clearOrder, placeOrder, removeOrder} from "../store/menus/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
-import { Col, Container, Modal, ModalBody, Row} from "reactstrap";
+import { Col, Container,  Row} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import Heading from "../components/Heading";
 import MenuButton from "../components/Button";
 import styled from "../utils/styled";
 import OrderCard from "../components/cards/OrderCard";
+import ConfirmationModal from "../components/layout/ConfirmationModal";
 
 
 type State = {
@@ -61,16 +62,6 @@ class Order extends React.Component<AllProps, State> {
         this.setState(prevState => ({
             confirmModal: !prevState.confirmModal
         }))
-    }
-
-    renderConfirmModal = () => {
-        return (
-            <Modal isOpen={this.state.confirmModal} toggle={this.toggleModal}>
-                <ModalBody>
-                    <h5 style={{textAlign: "center"}}>The order was sent!</h5>
-                </ModalBody>
-            </Modal>
-        )
     }
 
     componentDidMount(): void {
@@ -162,8 +153,7 @@ class Order extends React.Component<AllProps, State> {
                             You currently do not have any menus in your order.
                         </h5>
                     )}
-                    {this.renderConfirmModal()}
-
+                    <ConfirmationModal isOpen={this.state.confirmModal} toggleModal={this.toggleModal} text={'The order was sent!'}/>
 
                 </Container>
 

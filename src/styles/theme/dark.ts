@@ -5,7 +5,7 @@ import { lighten } from 'polished'
 
 const lightTheme: Theme = {
     colors: {
-        background: brandColors.gray75,
+        background: brandColors.background,
         body: brandColors.gray10,
         primaryColor: brandColors.primaryColor,
         primaryLightColor: brandColors.primaryLightColor,
