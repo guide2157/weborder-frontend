@@ -4,22 +4,24 @@ import {ApplicationState, ConnectedReduxProps} from '../store'
 import {addOrder, clearOrder, placeOrder, removeOrder} from "../store/menus/actions";
 import {Dispatch} from "redux";
 import Navigation from "../components/layout/Navigation";
-import { Col, Container,  Row} from "reactstrap";
+import {Col, Container, Row} from "reactstrap";
 import {Menu} from "../store/menus/types";
 import Heading from "../components/Heading";
 import MenuButton from "../components/Button";
 import styled from "../utils/styled";
 import OrderCard from "../components/cards/OrderCard";
 import ConfirmationModal from "../components/layout/ConfirmationModal";
+import {v1Api} from "../utils/api";
 
 
 type State = {
     totalPrice: number
-    confirmModal: boolean
+    modal: boolean
+    confirm: boolean
 }
 
 type PropsFromState = {
-    orders: {[key: number]: number}
+    orders: { [key: number]: number }
     menus: Menu[]
     config: any
 }
@@ -38,7 +40,8 @@ type AllProps = PropsFromState &
 class Order extends React.Component<AllProps, State> {
     state = {
         totalPrice: 0,
-        confirmModal: false
+        modal: false,
+        confirm: false
     }
 
     manageCart = (id: number, amount: number, add: boolean) => {
@@ -52,15 +55,37 @@ class Order extends React.Component<AllProps, State> {
         }))
     }
 
-    placeOrder = () => {
-        this.props.placeOrders()
-        this.toggleModal()
+    placeOrder = async () => {
+        try {
+            const {orders} = this.props
+            const params = {
+                path: 'order',
+                method: 'post',
+                body: {
+                    order: orders
+                }
+            }
+            const res = await v1Api(params)
+            if (res.ref_code != undefined) {
+                this.setState({
+                    confirm: true
+                })
+                this.props.placeOrders(res.ref_code)
+                this.toggleModal()
+            }
+        } catch (err) {
+            this.setState({
+                confirm: false
+            })
+            this.toggleModal()
+        }
+
 
     }
 
     toggleModal = () => {
         this.setState(prevState => ({
-            confirmModal: !prevState.confirmModal
+            modal: !prevState.modal
         }))
     }
 
@@ -82,20 +107,6 @@ class Order extends React.Component<AllProps, State> {
         const {orders, menus} = this.props
 
         const {totalPrice} = this.state
-        // const mockMenu = {
-        //         about: 'delicious',
-        //         category_name: 'Korean',
-        //         detail: 'best fried chicken in town',
-        //         image: '',
-        //         id: 1,
-        //         meta_description: '',
-        //         meta_title: '',
-        //         name: 'Fried Chicken',
-        //         price: 15,
-        //         slug: 'fried_chicken',
-        //         tags: ['spicy', 'chicken', 'deep fried'],
-        //         updated_at: 0
-        //     }
 
 
         return (
@@ -139,12 +150,12 @@ class Order extends React.Component<AllProps, State> {
 
                             </TotalPrice>
                             <Buttons>
-                            <MenuButton onClick={this.placeOrder}>
-                                Place Order
-                            </MenuButton>
-                            <MenuButton onClick={this.props.clearOrders}>
-                                Clear All
-                            </MenuButton>
+                                <MenuButton onClick={this.placeOrder}>
+                                    Place Order
+                                </MenuButton>
+                                <MenuButton onClick={this.props.clearOrders}>
+                                    Clear All
+                                </MenuButton>
                             </Buttons>
 
                         </div>
@@ -153,8 +164,8 @@ class Order extends React.Component<AllProps, State> {
                             You currently do not have any menus in your order.
                         </h5>
                     )}
-                    <ConfirmationModal isOpen={this.state.confirmModal} toggleModal={this.toggleModal} text={'The order was sent!'}/>
-
+                    <ConfirmationModal isOpen={this.state.modal} toggleModal={this.toggleModal}
+                                       text={this.state.confirm ? 'The order was sent!' : 'Sorry, there is an error in our system.'}/>
                 </Container>
 
             </Wrapper>
@@ -173,7 +184,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     clearOrders: () => dispatch(clearOrder()),
     removeFromOrder: (payload: any) => dispatch(removeOrder(payload)),
     addToOrder: (payload: any) => dispatch(addOrder(payload)),
-    placeOrders: () => dispatch(placeOrder())
+    placeOrders: (payload: any) => dispatch(placeOrder(payload))
 })
 
 export default connect(

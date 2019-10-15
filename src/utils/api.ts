@@ -15,10 +15,12 @@ export async function v1Api(params: any) {
             ? `${path}?${params.filter}`
             : `${path}`
     const method = params.method ? params.method : 'get'
-    const body = params.body
     const res = await fetch(url, {
         method,
-        body
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(params.body)
     })
     return await res.json()
 }

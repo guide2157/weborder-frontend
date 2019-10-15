@@ -1,5 +1,5 @@
-import { Reducer } from 'redux'
-import { MenusState, MenusActionTypes } from './types'
+import {Reducer} from 'redux'
+import {MenusState, MenusActionTypes} from './types'
 import moment from "moment";
 
 // Type-safe initialState!
@@ -15,7 +15,7 @@ const initialState: MenusState = {
 const reducer: Reducer<MenusState> = (state = initialState, action) => {
     switch (action.type) {
         case MenusActionTypes.FETCH_REQUEST: {
-            return { ...state, loading: true }
+            return {...state, loading: true}
         }
         case MenusActionTypes.FETCH_SUCCESS: {
             return {
@@ -25,10 +25,10 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             }
         }
         case MenusActionTypes.FETCH_ERROR: {
-            return { ...state, loading: false, errors: action.payload }
+            return {...state, loading: false, errors: action.payload}
         }
         case MenusActionTypes.ADD_TO_WISH_LIST: {
-            const { wishList } = state
+            const {wishList} = state
             wishList.push(action.payload)
             return {
                 ...state,
@@ -49,14 +49,14 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             }
         }
         case MenusActionTypes.ADD_TO_ORDERS: {
-            const { orders } = state
+            const {orders} = state
 
             const result = orders[action.payload]
             if (result === undefined) {
 
                 orders[action.payload] = 1
             } else {
-               orders[action.payload] = orders[action.payload] + 1
+                orders[action.payload] = orders[action.payload] + 1
             }
 
             return {
@@ -65,7 +65,7 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             }
         }
         case MenusActionTypes.REMOVE_FROM_ORDERS: {
-            const { orders } = state
+            const {orders} = state
             const result = orders[action.payload]
 
             if (result !== undefined) {
@@ -90,7 +90,9 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
         case MenusActionTypes.PLACE_ORDERS: {
             const {history, orders} = state
             const currentTime = moment().unix()
-            history[currentTime] = orders
+            const order = orders
+            order['ref_code'] = action.payload.ref_code
+            history[currentTime] = order
             return {
                 ...state,
                 history,
@@ -105,4 +107,4 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
 }
 
 
-export { reducer as menusReducer }
+export {reducer as menusReducer}

@@ -24,6 +24,7 @@ function* handleFetch() {
     }
 }
 
+
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchFetchRequest() {
