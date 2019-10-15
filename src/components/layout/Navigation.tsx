@@ -115,6 +115,12 @@ class Navigation extends React.Component<AllProps, State> {
                                 </NavItem>
 
                                 <NavItem className="mobile-nav-item ">
+                                    <Link className="nav-link" to="/history">
+                                        Order Log
+                                    </Link>
+                                </NavItem>
+
+                                <NavItem className="mobile-nav-item ">
                                     <Link className="nav-link" to="/about">
                                         The App
                                     </Link>

@@ -91,7 +91,7 @@ const reducer: Reducer<MenusState> = (state = initialState, action) => {
             const {history, orders} = state
             const currentTime = moment().unix()
             const order = orders
-            order['ref_code'] = action.payload.ref_code
+            order['ref_code'] = action.payload
             history[currentTime] = order
             return {
                 ...state,
