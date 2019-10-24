@@ -9,6 +9,7 @@ import RestaurantPage from './pages/Restaurant'
 import OrderPage from './pages/Orders';
 import AboutPage from './pages/About';
 import MenuPage from './pages/Menu';
+import HistoryPage from './pages/History'
 
 class Routes extends React.Component<{}, {}> {
     render() {
@@ -32,6 +33,10 @@ class Routes extends React.Component<{}, {}> {
                     <Route
                         path={'/orders'}
                         render={() => <OrderPage/>}
+                    />
+                    <Route
+                        path={'/history'}
+                        render={() => <HistoryPage/>}
                     />
                     <Route
                         path={'/restaurant'}

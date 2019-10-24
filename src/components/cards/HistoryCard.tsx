@@ -37,8 +37,6 @@ class HistoryCard extends React.Component<AllProps, State> {
     render() {
         const {menus, order, time} = this.props
         const {open} = this.state
-        console.log(order)
-        console.log(Object.keys(order).length)
         return (
             <Wrapper>
                 <ShortInfo onClick={this.toggleCollapse}>
@@ -75,6 +73,9 @@ class HistoryCard extends React.Component<AllProps, State> {
                                     </Row>
                                 )
                             }
+                            return (
+                                <div></div>
+                            )
                         })}
                     </Inside>
                 </Collapse>
@@ -96,6 +97,9 @@ export default connect(
 
 
 const Wrapper = styled('div')`
+
+    margin-bottom: 1rem;
+    
     row {
         margin-top: 1rem;
     }

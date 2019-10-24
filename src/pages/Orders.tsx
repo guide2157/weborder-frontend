@@ -59,7 +59,7 @@ class Order extends React.Component<AllProps, State> {
         try {
             const {orders} = this.props
             const params = {
-                path: 'order',
+                path: 'order/place',
                 method: 'post',
                 body: {
                     order: orders
